@@ -9,7 +9,7 @@ const server = net.createServer((socket) => {
   socket.on("close", () => {
     socket.end();
   });
-    let Direction = '/';
+    let Direction = '';
     const tcpPath = `http://localhost:4221/${Direction}`;
 
     if(!tcpPath.includes('index.html' || '')){
