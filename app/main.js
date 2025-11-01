@@ -9,10 +9,12 @@ const server = net.createServer((socket) => {
   socket.on("data", () => {
     socket.end();
   });
+    let Direction = 'index.html'
     const tcpPath = `http://localhost:4221/`;
-    const altTcpPath =`http://localhost:4221/index.html`
+    const altTcpPath =`http://localhost:4221/${Direction}`
+    
 
-    if(!tcpPath || !altTcpPath){
+    if(!tcpPath || !altTcpPath.includes(Direction)){
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
     }
     else{
