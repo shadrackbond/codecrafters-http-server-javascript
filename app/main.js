@@ -9,9 +9,9 @@ const server = net.createServer((socket) => {
   socket.on("close", () => {
     socket.end();
   });
-  const PATH = "http://localhost:4221/index.html";
-
-  if(PATH){
+  const PATH = `http://localhost:4221${Direction}`;
+  let Direction =''
+  if(Direction === "/index.html"){
     socket.write("HTTP/1.1 200 OK\r\n\r\n");
   }else{
     socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
