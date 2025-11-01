@@ -9,8 +9,8 @@ const server = net.createServer((socket) => {
   socket.on("close", () => {
     socket.end();
   });
+  let Direction = ''
   const PATH = `http://localhost:4221${Direction}`;
-  let Direction =''
   if(Direction === "/index.html"){
     socket.write("HTTP/1.1 200 OK\r\n\r\n");
   }else{
