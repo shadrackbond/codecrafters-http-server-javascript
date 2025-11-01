@@ -17,7 +17,7 @@ const server = net.createServer((socket) => {
 //     socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
 //   }
     let Direction = '/';
-    const tcpPath = `http://localhost:4221/${Direction}`;
+    //const tcpPath = `http://localhost:4221/${Direction}`;
 
     if(Direction === 'index.html' || Direction === Direction){
         socket.write("HTTP/1.1 200 OK\r\n\r\n");
