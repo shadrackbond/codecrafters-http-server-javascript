@@ -19,7 +19,7 @@ const server = net.createServer((socket) => {
     let Direction = '/';
     //const tcpPath = `http://localhost:4221/${Direction}`;
 
-    if(Direction === 'index.html' || Direction === Direction){
+    if(!Direction === 'index.html' || !Direction === Direction){
         socket.write("HTTP/1.1 200 OK\r\n\r\n");
     }
     else{
