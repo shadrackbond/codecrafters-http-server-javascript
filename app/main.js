@@ -9,21 +9,15 @@ const server = net.createServer((socket) => {
   socket.on("close", () => {
     socket.end();
   });
-//   let Direction = ''
-//   const PATH = `http://localhost:4221${Direction}`;
-//   if(!Direction === "/index.html" && !Direction === null){
-//     socket.write("HTTP/1.1 200 OK\r\n\r\n");
-//   }else{
-//     socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
-//   }
     let Direction = '/';
     //const tcpPath = `http://localhost:4221/${Direction}`;
 
     if(!Direction === 'index.html' || !Direction === Direction){
-        socket.write("HTTP/1.1 200 OK\r\n\r\n");
+        socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
     }
     else{
-        socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
+        
+        socket.write("HTTP/1.1 200 OK\r\n\r\n");
     }
 
 });
