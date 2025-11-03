@@ -6,21 +6,19 @@ console.log("Logs from your program will appear here!");
 
 // TODO: Uncomment the code below to pass the first stage
 const server = net.createServer((socket) => {
-  socket.on("data", () => {
-    socket.end();
+  socket.on("connect", () => {
   });
-    let Direction = 'index.html'
-    const tcpPath = `http://localhost:4221/`;
-    const altTcpPath =`http://localhost:4221/${Direction}`
-    
-
-    if(!tcpPath || !altTcpPath.includes(Direction)){
-        socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
-    }
-    else{
-        socket.write("HTTP/1.1 200 OK\r\n\r\n");
-    }
-
+  const urlPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
+  console.log(urlPath);
+  if(urlPath.includes('index.html')|| urlPath.endsWith('/')){
+    socket.write("HTTP/1.1 200 OK\r\n\r\n")
+  }
+  else{
+    socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
+  }
+  
 });
+
+
 
 server.listen(4221, "localhost");
