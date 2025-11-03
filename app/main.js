@@ -9,7 +9,7 @@ const server = net.createServer((socket) => {
     const requestString = data.toString();
     console.log("Received request: \n", requestString);
 
-    const requestLine = requestString.split("\r\n"[0]);
+    const requestLine = requestString.split("\r\n")[0];
     const parts = requestLine.split(" ");
 
     if(parts.length < 2){// to make sure the request line is valid if not close the connection
