@@ -1,3 +1,4 @@
+const { text } = require("body-parser");
 const net = require("net");
 const path = require("net");
 
@@ -18,11 +19,25 @@ const server = net.createServer((socket) => {
     }
 
     const urlPath = parts[1];
+    let otherParts = parts.slice(2)
 
-    if(urlPath === '/' || urlPath === '/index.html'){
+    if(urlPath === '/' || urlPath === '/index.html' || urlPath === '/echo/'){
       console.log("sending 200 OK")
-      socket.write("HTTP/1.1 200 OK\r\n\r\n")
+      socket.write("HTTP/1.1 200 OK\r\n\r\n")    
     }
+
+    //what if I have a variable which equals /echo/{str} then i can pass the abc as the string
+
+    if(otherParts = 'abc'){
+      content_type = text;
+      content_Length = otherParts.length;
+      theResponse = otherParts
+      socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
+        ${content_type}\r\nContent-Length: 
+        ${content_Length}\r\n\r\n${theResponse}`
+      )
+    }
+
     else{
       console.log("sending 404 Not Found");
       socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
