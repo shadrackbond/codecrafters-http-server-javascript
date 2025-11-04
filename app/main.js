@@ -1,5 +1,4 @@
 const net = require("net");
-const path = require("net");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -20,16 +19,16 @@ const server = net.createServer((socket) => {
     let urlPath = parts[1];
     
 
-    if(urlPath === '/' || urlPath === '/index.html' || urlPath === '/echo'){
+    if(urlPath === '/' || urlPath === '/index.html'){
       console.log("sending 200 OK")
       socket.write("HTTP/1.1 200 OK\r\n\r\n")    
     }
 
     //what if I have a variable which equals /echo/{str} then i can pass the abc as the string
 
-    else if(urlPath.startsWith('/echo')){
-      let thirdPart = urlPath.split('/');
-      const echoString = thirdPart[2];
+    else if(urlPath.startsWith('/echo/')){
+      //let thirdPart = urlPath.split('/');
+      const echoString = urlPath.substring(6);
       console.log(echoString);
       content_type = 'text/plain';
       content_Length = echoString.length;
