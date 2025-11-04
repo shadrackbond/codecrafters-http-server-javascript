@@ -18,23 +18,25 @@ const server = net.createServer((socket) => {
       return;
     }
 
-    const urlPath = parts[1];
-    let otherParts = parts.slice(2)
+    let urlPath = parts[1];
+    
 
-    if(urlPath === '/' || urlPath === '/index.html' || urlPath === '/echo/'){
+    if(urlPath === '/' || urlPath === '/index.html' || urlPath === '/echo'){
       console.log("sending 200 OK")
       socket.write("HTTP/1.1 200 OK\r\n\r\n")    
     }
 
     //what if I have a variable which equals /echo/{str} then i can pass the abc as the string
 
-    if(otherParts = 'abc'){
-      content_type = text;
-      content_Length = otherParts.length;
-      theResponse = otherParts
+    else if(urlPath.startsWith('/echo')){
+      let thirdPart = urlPath.split('/');
+      const echoString = thirdPart[2];
+      console.log(echoString);
+      content_type = 'text/plain';
+      content_Length = echoString.length;
       socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
-        ${content_Length}\r\n\r\n${theResponse}`
+        ${content_Length}\r\n\r\n${echoString}`
       )
     }
 
