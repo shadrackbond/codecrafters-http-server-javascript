@@ -39,13 +39,13 @@ const server = net.createServer((socket) => {
     }
 
     else if(urlPath.startsWith('/user-agent')){
-      const echoString = urlPath.substring(12);
-      console.log(echoString);
+      const agentString = urlPath.substring(11);
+      console.log(agentString);
       content_type = 'text/plain';
-      content_Length = echoString.length;
+      content_Length = agentString.length;
       socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
-        ${content_Length}\r\n\r\n${echoString}`
+        ${content_Length}\r\n\r\n${agentString}`
       )
     }
 
