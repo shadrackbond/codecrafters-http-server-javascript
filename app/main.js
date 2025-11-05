@@ -8,17 +8,40 @@ const server = net.createServer((socket) => {
     const requestString = data.toString();
     console.log("Received request: \n", requestString);
 
-    const requestLine = requestString.split("\r\n")[0];
+    // Split the request into lines
+    const lines = requestString.split("\r\n");
+
+    // The first line is the request line
+    const requestLine = lines[0];
     const parts = requestLine.split(" ");
 
-    if (parts.length < 2) {// to make sure the request line is valid if not close the connection
-      socket.end()
+    if (parts.length < 2) {
+      socket.end();
       return;
     }
 
     let urlPath = parts[1];
 
+    // Parse Headers
+    // Create an object to store headers
+    const headers = {};
+    // Loop through lines starting from the second line (index 1)
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i];
+      
+      // Stop when we reach the empty line
+      if (line === "") {
+        break; 
+      }
 
+      // Split the line into name and value
+      const [headerName, headerValue] = line.split(": ");
+      if (headerName && headerValue) {
+        // Store in our object (lowercase for easy access)
+        headers[headerName.toLowerCase()] = headerValue;
+      }
+    }
+    
     if (urlPath === '/' || urlPath === '/index.html') {
       console.log("sending 200 OK")
       socket.write("HTTP/1.1 200 OK\r\n\r\n")
@@ -38,8 +61,8 @@ const server = net.createServer((socket) => {
       )
     }
 
-    else if(urlPath.startsWith('/user-agent')){
-      const agentString = urlPath.substring(11);
+    else if (urlPath === '/user-agent') {
+      const agentString = headers['user-agent'];
       console.log(agentString);
       content_type = 'text/plain';
       content_Length = agentString.length;
