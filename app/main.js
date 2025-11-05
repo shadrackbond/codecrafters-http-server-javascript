@@ -38,7 +38,7 @@ const server = net.createServer((socket) => {
       )
     }
 
-    else if(urlPath.startsWith('/User-Agent/')){
+    else if(urlPath.startsWith('/user-agent')){
       const echoString = urlPath.substring(12);
       console.log(echoString);
       content_type = 'text/plain';
