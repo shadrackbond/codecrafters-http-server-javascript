@@ -64,8 +64,8 @@ const server = net.createServer((socket) => {
       )
     }
 
-    else if(urlPath.startsWith('/files/')){
-      const fileString = urlPath.substring(7);
+    else if(urlPath === '/files/'){
+      const fileString = headers['files'];
       console.log(fileString);
       content_type = 'application/octet-stream';
       content_Length = fileString.length;
