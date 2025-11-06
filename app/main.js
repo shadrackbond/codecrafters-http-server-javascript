@@ -73,7 +73,7 @@ const server = net.createServer((socket) => {
         const fileContents = fs.readFileSync(fileString);
         content_type = 'application/octet-stream';
         content_Length = byteSize;
-        socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${content_type}\r\nContent-Length: ${content_Length}\r\n\r\n${fileContents}`
+        socket.write(`HTTP/1.1 200 OK\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}`
         )
         socket.end()
       }
