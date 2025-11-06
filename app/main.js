@@ -67,19 +67,29 @@ const server = net.createServer((socket) => {
     else if(urlPath.startsWith('/files/')){
       const fileString = urlPath.substring(7);
       console.log(fileString);
-      const byteSize = fileString.size;
-
-      if(byteSize== ""){
-        socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
-      }
-      else{
+      try{
+        const stats = fs.statSync(fileString);
+        const byteSize =stats.size;
         content_type = 'application/octet-stream';
-        content_Length = byteSize.length;
+        content_Length = byteSize;
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
         ${content_Length}\r\n\r\n${byteSize}`
         )
       }
+      catch(error){
+        socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+      }
+      // if(byteSize== ""){
+      //   socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+      // }
+      // else{
+      //   content_type = 'application/octet-stream';
+      //   content_Length = byteSize;
+      //   socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
+      //   ${content_type}\r\nContent-Length: 
+      //   ${content_Length}\r\n\r\n${byteSize}`
+      //   )
       
     }
 
