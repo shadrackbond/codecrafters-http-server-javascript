@@ -70,15 +70,17 @@ const server = net.createServer((socket) => {
       try{
         const stats = fs.statSync(fileString);
         const byteSize =stats.size;
+        const fileContents = fs.readFileSync(fileString);
         content_type = 'application/octet-stream';
         content_Length = byteSize;
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
-        ${content_Length}\r\n\r\n${byteSize}`
+        ${content_Length}\r\n\r\n${fileContents}`
         )
       }
       catch(error){
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+        socket.end();
       }
       // if(byteSize== ""){
       //   socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
