@@ -1,3 +1,4 @@
+const { url } = require("inspector");
 const net = require("net");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -58,6 +59,17 @@ const server = net.createServer((socket) => {
       socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
         ${content_Length}\r\n\r\n${echoString}`
+      )
+    }
+
+    else if(urlPath.startsWith('/files/')){
+      const fileString = urlPath.substring(7);
+      console.log(fileString);
+      content_type = 'application/octet-stream';
+      content_Length = fileString.length;
+      socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
+        ${content_type}\r\nContent-Length: 
+        ${content_Length}\r\n\r\n${fileString}`
       )
     }
 
