@@ -1,6 +1,17 @@
 const { url } = require("inspector");
 const net = require("net");
 const fs = require('fs');
+const path = require("path");
+const args = process.argv;
+
+
+let directory = '';
+
+const dirIndex = args.indexOf('--directory');
+if(dirIndex > -1 && args[dirIndex + 1]){
+  directory = args[dirIndex + 1];
+  console.log(`using the directory: ${directory}`)
+}
 
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -67,10 +78,12 @@ const server = net.createServer((socket) => {
     else if(urlPath.startsWith('/files/')){
       const fileString = urlPath.substring(7);
       console.log(fileString);
+      const fullPath = path.join(directory, fileString)
+      console.log(`this is the fullpath: ${fullPath}`)
       try{
-        const stats = fs.statSync(fileString);
+        const stats = fs.statSync(fullPath);
         const byteSize =stats.size;
-        const fileContents = fs.readFileSync(fileString);
+        const fileContents = fs.readFileSync(fullPath);
         content_type = 'application/octet-stream';
         content_Length = byteSize;
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}`
