@@ -70,7 +70,7 @@ const server = net.createServer((socket) => {
       const stats = fs.stat(fileString);
       const byteSize = stats.size;
 
-      if(fileString = ""){
+      if(byteSize == null){
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
       }
       else{
