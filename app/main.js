@@ -73,15 +73,16 @@ const server = net.createServer((socket) => {
         const fileContents = fs.readFileSync(fileString);
         content_type = 'application/octet-stream';
         content_Length = byteSize;
-        socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
-        ${content_type}\r\nContent-Length: 
-        ${content_Length}\r\n\r\n${fileContents}`
+        socket.write(`HTTP/1.1 200 OK\r\nContent-Type:
+          ${content_type}\r\nContent-Length:
+          ${content_Length}\r\n\r\n${fileContents}`
         )
       }
       catch(error){
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
         socket.end();
       }
+    }
       // if(byteSize== ""){
       //   socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
       // }
@@ -93,7 +94,6 @@ const server = net.createServer((socket) => {
       //   ${content_Length}\r\n\r\n${byteSize}`
       //   )
       
-    }
 
     else if (urlPath === '/user-agent') {
       const agentString = headers['user-agent'];
