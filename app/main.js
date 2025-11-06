@@ -67,10 +67,9 @@ const server = net.createServer((socket) => {
     else if(urlPath.startsWith('/files/')){
       const fileString = urlPath.substring(7);
       console.log(fileString);
-      const stats = fs.stat(fileString);
-      const byteSize = stats.size;
+      const byteSize = fileString.size;
 
-      if(byteSize == null){
+      if(byteSize== ""){
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
       }
       else{
