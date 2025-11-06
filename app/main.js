@@ -74,7 +74,7 @@ const server = net.createServer((socket) => {
       }
       else{
         content_type = 'application/octet-stream';
-        content_Length = byteSize;
+        content_Length = byteSize.length;
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
         ${content_Length}\r\n\r\n${byteSize}`
