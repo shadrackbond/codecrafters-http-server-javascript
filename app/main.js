@@ -2,13 +2,14 @@ const { url } = require("inspector");
 const net = require("net");
 const fs = require('fs');
 const path = require("path");
+const { get, METHODS } = require("http");
 const args = process.argv;
 
 
 let directory = '';
 
 const dirIndex = args.indexOf('--directory');
-if(dirIndex > -1 && args[dirIndex + 1]){
+if (dirIndex > -1 && args[dirIndex + 1]) {
   directory = args[dirIndex + 1];
   console.log(`using the directory: ${directory}`)
 }
@@ -42,10 +43,10 @@ const server = net.createServer((socket) => {
     // Loop through lines starting from the second line (index 1)
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i];
-      
+
       // Stop when we reach the empty line
       if (line === "") {
-        break; 
+        break;
       }
 
       // Split the line into name and value
@@ -55,7 +56,7 @@ const server = net.createServer((socket) => {
         headers[headerName.toLowerCase()] = headerValue;
       }
     }
-    
+
     if (urlPath === '/' || urlPath === '/index.html') {
       console.log("sending 200 OK")
       socket.write("HTTP/1.1 200 OK\r\n\r\n")
@@ -75,37 +76,48 @@ const server = net.createServer((socket) => {
       )
     }
 
-    else if(urlPath.startsWith('/files/')){
+    else if (urlPath.startsWith('/files/')) {
       const fileString = urlPath.substring(7);
       console.log(fileString);
       const fullPath = path.join(directory, fileString)
       console.log(`this is the fullpath: ${fullPath}`)
-      try{
-        const stats = fs.statSync(fullPath);
-        const byteSize =stats.size;
-        const fileContents = fs.readFileSync(fullPath);
-        content_type = 'application/octet-stream';
-        content_Length = byteSize;
-        socket.write(`HTTP/1.1 200 OK\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}`
-        )
-        socket.end()
+      try {
+       if(parts[0] === "GET"){
+         const stats = fs.statSync(fullPath);
+         const byteSize = stats.size;
+         const fileContents = fs.readFileSync(fullPath);
+         content_type = 'application/octet-stream';
+         content_Length = byteSize;
+         socket.write(`HTTP/1.1 200 OK\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}`
+         )
+       }
+       else if(parts[0] === "POST"){
+         const splitedRequestLine = requestString.split('\r\n\r\n');
+         bodyContent = splitedRequestLine[1];
+         fs.writeFileSync(fullPath, bodyContent);
+         content_type = 'application/octet-stream';
+         content_Length = byteSize;
+         socket.write(`HTTP/1.1 201 Created\r\n\r\n`
+          /*Content-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}*/
+         )
+       }
       }
-      catch(error){
+      catch (error) {
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
-        socket.end();
       }
     }
-      // if(byteSize== ""){
-      //   socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
-      // }
-      // else{
-      //   content_type = 'application/octet-stream';
-      //   content_Length = byteSize;
-      //   socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
-      //   ${content_type}\r\nContent-Length: 
-      //   ${content_Length}\r\n\r\n${byteSize}`
-      //   )
-      
+
+    // if(byteSize== ""){
+    //   socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+    // }
+    // else{
+    //   content_type = 'application/octet-stream';
+    //   content_Length = byteSize;
+    //   socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
+    //   ${content_type}\r\nContent-Length: 
+    //   ${content_Length}\r\n\r\n${byteSize}`
+    //   )
+
 
     else if (urlPath === '/user-agent') {
       const agentString = headers['user-agent'];
