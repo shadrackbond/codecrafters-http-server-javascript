@@ -3,6 +3,7 @@ const net = require("net");
 const fs = require('fs');
 const path = require("path");
 const { get, METHODS } = require("http");
+const { CompressionStream } = require("stream/web");
 const args = process.argv;
 
 
@@ -71,10 +72,22 @@ const server = net.createServer((socket) => {
       let encodingHeader = headers['accept-encoding'];
       console.log(encodingHeader);
       if(encodingHeader === 'gzip'){
-        console.log("success")
+        const compressedReadableStream = echoString.pipeThrough(
+          new CompressionStream('gzip')
+        )
+        content_type = 'text/plain';
+        content_Length = compressedReadableStream.length;
+        content_encoding = encodingHeader;
+        socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:${content_encoding}\r\nContent-Type: 
+        ${content_type}\r\nContent-Length: 
+        ${content_Length}\r\n\r\n${echoString}`
+        )
       }
       else{
-        console.log("code error")
+        content_type = 'text/plain';
+        socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
+        ${content_type}\r\n`
+        )
       }
       content_type = 'text/plain';
       content_Length = echoString.length;
