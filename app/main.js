@@ -68,18 +68,16 @@ const server = net.createServer((socket) => {
       //let thirdPart = urlPath.split('/');
       const echoString = urlPath.substring(6);//gives everything from the 6th character to the end of the string
       console.log(echoString);
-      // let encodingHeaderList = [];
-      let encodingHeader = headers['accept-encoding'] || '';
-      let clientEncodings = encodingHeaderList.split(",").map(s => s.trim());
-      encodingHeaderList.push(encodingHeader);
-      console.log(encodingHeader);
-      let zipEncoding = clientEncodings.includes('gzip');
+      const encodingHeader = headers['accept-encoding'] || '';
+      const clientEncodings = encodingHeader.split(",").map(s => s.trim());
+      console.log(clientEncodings);
+      const zipEncoding = clientEncodings.includes('gzip');
       if (zipEncoding) {
         const compressedReadableStream = zlib.gzipSync(echoString)
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
-        content_encoding = compressedReadableStream;
-        socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:${content_encoding}\r\nContent-Type: 
+        //content_encoding = compressedReadableStream;
+        socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:gzip\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
         ${content_Length}\r\n\r\n${echoString}`
         )
