@@ -95,8 +95,6 @@ const server = net.createServer((socket) => {
          const splitedRequestLine = requestString.split('\r\n\r\n');
          bodyContent = splitedRequestLine[1];
          fs.writeFileSync(fullPath, bodyContent);
-         content_type = 'application/octet-stream';
-         content_Length = byteSize;
          socket.write(`HTTP/1.1 201 Created\r\n\r\n`
           /*Content-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}*/
          )
