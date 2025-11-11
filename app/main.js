@@ -73,7 +73,7 @@ const server = net.createServer((socket) => {
       let encodingHeader = headers['accept-encoding'];
       encodingHeaderList.push(encodingHeader);
       console.log(encodingHeader);
-      if (encodingHeader === 'gzip') {
+      if (encodingHeaderList.includes('gzip')) {
         const compressedReadableStream = zlib.gzipSync(echoString)
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
