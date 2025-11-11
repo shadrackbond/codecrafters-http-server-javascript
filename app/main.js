@@ -64,15 +64,16 @@ const server = net.createServer((socket) => {
       socket.write("HTTP/1.1 200 OK\r\n\r\n")
     }
 
-    //what if I have a variable which equals /echo/{str} then i can pass the abc as the string
-
     else if (urlPath.startsWith('/echo/')) {
       //let thirdPart = urlPath.split('/');
       const echoString = urlPath.substring(6);//gives everything from the 6th character to the end of the string
       console.log(echoString);
+      let encodingHeaderList = [];
+      encodingHeaderList.split(",")
       let encodingHeader = headers['accept-encoding'];
+      encodingHeaderList.push(encodingHeader);
       console.log(encodingHeader);
-      if(encodingHeader === 'gzip'){
+      if (encodingHeader === 'gzip') {
         const compressedReadableStream = zlib.gzipSync(echoString)
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
@@ -82,7 +83,7 @@ const server = net.createServer((socket) => {
         ${content_Length}\r\n\r\n${echoString}`
         )
       }
-      else{
+      else {
         content_type = 'text/plain';
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
         ${content_type}\r\n`
@@ -102,23 +103,23 @@ const server = net.createServer((socket) => {
       const fullPath = path.join(directory, fileString)
       console.log(`this is the fullpath: ${fullPath}`)
       try {
-       if(parts[0] === "GET"){
-         const stats = fs.statSync(fullPath);
-         const byteSize = stats.size;
-         const fileContents = fs.readFileSync(fullPath);
-         content_type = 'application/octet-stream';
-         content_Length = byteSize;
-         socket.write(`HTTP/1.1 200 OK\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}`
-         )
-       }
-       else if(parts[0] === "POST"){
-         const splitedRequestLine = requestString.split('\r\n\r\n');
-         bodyContent = splitedRequestLine[1];
-         fs.writeFileSync(fullPath, bodyContent);
-         socket.write(`HTTP/1.1 201 Created\r\n\r\n`
-          /*Content-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}*/
-         )
-       }
+        if (parts[0] === "GET") {
+          const stats = fs.statSync(fullPath);
+          const byteSize = stats.size;
+          const fileContents = fs.readFileSync(fullPath);
+          content_type = 'application/octet-stream';
+          content_Length = byteSize;
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}`
+          )
+        }
+        else if (parts[0] === "POST") {
+          const splitedRequestLine = requestString.split('\r\n\r\n');
+          bodyContent = splitedRequestLine[1];
+          fs.writeFileSync(fullPath, bodyContent);
+          socket.write(`HTTP/1.1 201 Created\r\n\r\n`
+            /*Content-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${fileContents}*/
+          )
+        }
       }
       catch (error) {
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
