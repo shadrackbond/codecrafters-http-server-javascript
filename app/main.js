@@ -5,6 +5,7 @@ const path = require("path");
 const { get, METHODS } = require("http");
 const { CompressionStream } = require("stream/web");
 const args = process.argv;
+const zlib = require('zlib')
 
 
 let directory = '';
@@ -72,9 +73,7 @@ const server = net.createServer((socket) => {
       let encodingHeader = headers['accept-encoding'];
       console.log(encodingHeader);
       if(encodingHeader === 'gzip'){
-        const compressedReadableStream = echoString.pipeThrough(
-          new CompressionStream('gzip')
-        )
+        const compressedReadableStream = zlib.gzipSync(echoString)
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
         content_encoding = encodingHeader;
