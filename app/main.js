@@ -85,6 +85,8 @@ const server = net.createServer((socket) => {
         }
       }
 
+      const closeConnection = (headers['connection']&&headers['connection'].toLowerCase === 'close')
+      
       if (urlPath === '/' || urlPath === '/index.html') {
         console.log("sending 200 OK");
         socket.write("HTTP/1.1 200 OK\r\n\r\n");
@@ -139,9 +141,14 @@ const server = net.createServer((socket) => {
         let content_Length = Buffer.byteLength(agentString);
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${content_type}\r\nContent-Length: ${content_Length}\r\n\r\n${agentString}`);
       }
+      
       else {
         console.log("sending 404 Not Found");
         socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+      }
+      if(closeConnection){
+        socket.end();
+        break;
       }
     } 
 
