@@ -68,8 +68,8 @@ const server = net.createServer((socket) => {
       //let thirdPart = urlPath.split('/');
       const echoString = urlPath.substring(6);//gives everything from the 6th character to the end of the string
       console.log(echoString);
-      let encodingHeaderList = [];
-      let encodingHeader = headers['accept-encoding'];
+      // let encodingHeaderList = [];
+      let encodingHeader = headers['accept-encoding'] || '';
       let clientEncodings = encodingHeaderList.split(",").map(s => s.trim());
       encodingHeaderList.push(encodingHeader);
       console.log(encodingHeader);
