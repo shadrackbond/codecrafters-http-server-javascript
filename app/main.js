@@ -77,9 +77,7 @@ const server = net.createServer((socket) => {
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
         //content_encoding = compressedReadableStream;
-        socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:gzip\r\nContent-Type: 
-        ${content_type}\r\nContent-Length: 
-        ${content_Length}\r\n\r\n${echoString}`
+        socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:gzip\r\nContent-Type:${content_type}\r\nContent-Length:${content_Length}\r\n\r\n${echoString}`
         )
       }
       else {
