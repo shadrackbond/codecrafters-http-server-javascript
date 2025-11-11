@@ -70,6 +70,12 @@ const server = net.createServer((socket) => {
       console.log(echoString);
       const encodingHeader = headers['Accept-Encoding'];
       console.log(encodingHeader);
+      if(encodingHeader === 'gzip'){
+        console.log("success")
+      }
+      else{
+        console.log("code error")
+      }
       content_type = 'text/plain';
       content_Length = echoString.length;
       socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
