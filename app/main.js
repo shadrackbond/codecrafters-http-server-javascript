@@ -78,7 +78,7 @@ const server = net.createServer((socket) => {
         const compressedReadableStream = zlib.gzipSync(echoString)
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
-        content_encoding = zipEncoding;
+        content_encoding = 'gzip';
         socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:${content_encoding}\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
         ${content_Length}\r\n\r\n${echoString}`
