@@ -147,4 +147,5 @@ const server = net.createServer((socket) => {
 
 server.listen(4221, "localhost", () => {
   console.log("Server listening on http://localhost:4221")
+  socket.setKeepAlive(true)
 });
