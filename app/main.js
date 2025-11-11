@@ -80,7 +80,7 @@ const server = net.createServer((socket) => {
         socket.end();
 
       } else {
-        const contentLength = Buffer.byteLength(echoString); // Use Buffer.byteLength, it's safer
+        const contentLength = Buffer.byteLength(echoString);
         socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${contentLength}\r\n\r\n${echoString}`);
         socket.end();
       }
