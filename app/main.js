@@ -130,8 +130,9 @@ const server = net.createServer((socket) => {
       console.log("sending 404 Not Found");
       socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
     }
-    socket.setKeepAlive(true)
-    //socket.end() // closing the connection after sending the response
+    if (socket.setKeepAlive(true)){
+      socket.setKeepAlive(true);
+    }
   });
   socket.on("close", () => {
     console.log("connection closed");
