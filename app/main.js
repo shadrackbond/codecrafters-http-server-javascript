@@ -68,7 +68,7 @@ const server = net.createServer((socket) => {
       //let thirdPart = urlPath.split('/');
       const echoString = urlPath.substring(6);//gives everything from the 6th character to the end of the string
       console.log(echoString);
-      let encodingHeader = headers['Accept-Encoding: gzip'];
+      let encodingHeader = headers['accept-encoding'];
       console.log(encodingHeader);
       if(encodingHeader === 'gzip'){
         console.log("success")
