@@ -69,16 +69,16 @@ const server = net.createServer((socket) => {
       const echoString = urlPath.substring(6);//gives everything from the 6th character to the end of the string
       console.log(echoString);
       let encodingHeaderList = [];
-      //encodingHeaderList.split(",")
       let encodingHeader = headers['accept-encoding'];
+      let clientEncodings = encodingHeaderList.split(",").map(s => s.trim());
       encodingHeaderList.push(encodingHeader);
       console.log(encodingHeader);
-      let zipEncoding = encodingHeaderList.includes('gzip');
+      let zipEncoding = clientEncodings.includes('gzip');
       if (zipEncoding) {
         const compressedReadableStream = zlib.gzipSync(echoString)
         content_type = 'text/plain';
         content_Length = compressedReadableStream.length;
-        content_encoding = 'gzip';
+        content_encoding = compressedReadableStream;
         socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding:${content_encoding}\r\nContent-Type: 
         ${content_type}\r\nContent-Length: 
         ${content_Length}\r\n\r\n${echoString}`
@@ -90,12 +90,12 @@ const server = net.createServer((socket) => {
         ${content_type}\r\n`
         )
       }
-      content_type = 'text/plain';
-      content_Length = echoString.length;
-      socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
-        ${content_type}\r\nContent-Length: 
-        ${content_Length}\r\n\r\n${echoString}`
-      )
+      // content_type = 'text/plain';
+      // content_Length = echoString.length;
+      // socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
+      //   ${content_type}\r\nContent-Length: 
+      //   ${content_Length}\r\n\r\n${echoString}`
+      // )
     }
 
     else if (urlPath.startsWith('/files/')) {
