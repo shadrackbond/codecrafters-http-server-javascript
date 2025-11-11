@@ -68,6 +68,8 @@ const server = net.createServer((socket) => {
       //let thirdPart = urlPath.split('/');
       const echoString = urlPath.substring(6);//gives everything from the 6th character to the end of the string
       console.log(echoString);
+      const encodingHeader = headers['Accept-Encoding'];
+      console.log(encodingHeader);
       content_type = 'text/plain';
       content_Length = echoString.length;
       socket.write(`HTTP/1.1 200 OK\r\nContent-Type: 
